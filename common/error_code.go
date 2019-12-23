@@ -20,6 +20,7 @@ const (
 	ModelStoreError    = 1008 // 存储错误
 	OperationFailure   = 1009 // 操作失败
 	RoutingNotExist    = 1010 // 路由不存在
+	DuplicateEntry     = 1062 // 引用Mysql唯一性约束冲突
 )
 
 // 根据错误码 获取错误信息

@@ -55,26 +55,31 @@ func Online(c *gin.Context) {
 // 给用户发送消息
 func SendMessage(c *gin.Context) {
 	// 获取参数
+	// 注意请求头应该是 Content-Type = application/x-www-form-urlencoded
+	// 请求体也选择 x-www-form-urlencoded
 	appIdStr := c.PostForm("appId") // appIds 一个用户在多个平台登录,比如：101-Web 102-iOS 103-Android
+	userId := c.PostForm("userId")
 	fromId := c.PostForm("fromId")
 	toId := c.PostForm("toId")
 	msgId := c.PostForm("msgId")
 	message := c.PostForm("message")
 
 	fmt.Println(
-		"------------------------\n"+
+		"\n------------ user_controller.go ------------\n"+
 			"http请求SendMessage\n",
 		"appId: "+appIdStr+"\n",
+		"当前用户id: "+userId+"\n",
 		"发送者id: "+fromId+"\n",
 		"接收者id: "+toId+"\n",
 		"消息id: "+msgId+"\n",
 		"消息内容: "+message+"\n",
-		"------------------------\n")
+		"--------------------------------------------\n")
 	appId, _ := strconv.ParseInt(appIdStr, 10, 32)
 	data := make(map[string]interface{})
 	if cache.SeqDuplicates(msgId) {
+		fmt.Println("------------------------ user_controller.go msgId重复提交 ------------------------")
 		fmt.Println("给具体用户发送消息，msgId重复提交:", msgId)
-		controllers.Response(c, common.OK, "", data)
+		controllers.Response(c, common.DuplicateEntry, "Duplicate MsgId", data)
 		return
 	}
 	//-------以上代码和 SendMessageAll() 完全一样
@@ -90,23 +95,26 @@ func SendMessage(c *gin.Context) {
 func SendMessageAll(c *gin.Context) {
 	// 获取参数
 	appIdStr := c.PostForm("appId")
+	userId := c.PostForm("userId")
 	fromId := c.PostForm("fromId")
 	msgId := c.PostForm("msgId")
 	message := c.PostForm("message")
 
 	fmt.Println(
-		"------------------------\n"+
+		"\n------------ user_controller.go ------------\n"+
 			"http请求SendMessageAll\n",
 		"appId: "+appIdStr+"\n",
+		"当前用户id: "+userId+"\n",
 		"发送者id: "+fromId+"\n",
 		"消息id: "+msgId+"\n",
 		"消息内容: "+message+"\n",
-		"------------------------\n")
+		"--------------------------------------------\n")
 	appId, _ := strconv.ParseInt(appIdStr, 10, 32)
 	data := make(map[string]interface{})
 	if cache.SeqDuplicates(msgId) {
+		fmt.Println("------------------------ user_controller.go msgId重复提交 ------------------------")
 		fmt.Println("给全体用户发送消息，msgId重复提交:", msgId)
-		controllers.Response(c, common.OK, "", data)
+		controllers.Response(c, common.DuplicateEntry, "Duplicate MsgId", data)
 		return
 	}
 	//-------以上代码和 SendMessage() 完全一样

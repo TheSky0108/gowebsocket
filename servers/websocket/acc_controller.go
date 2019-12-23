@@ -21,10 +21,9 @@ import (
 func PingController(client *Client, seq string, message []byte) (code uint32, msg string, data interface{}) {
 
 	code = common.OK
+	fmt.Println("------------------------ acc_controller.go WebSocket Ping ------------------------")
 	fmt.Println("webSocket_request ping接口", client.Addr, seq, message)
-
 	data = "pong"
-
 	return
 }
 
@@ -34,31 +33,34 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 	code = common.OK
 	currentTime := uint64(time.Now().Unix())
 
+	// 解析发送过来的Json数据为Login格式
 	request := &models.Login{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = common.ParameterIllegal
+		fmt.Println("------------------------ acc_controller.go WebSocket Login-ParameterIllegal ------------------------")
 		fmt.Println("用户登录 解析数据失败", seq, err)
-
 		return
 	}
+	// webSocket_request 用户登录 1577097036373-519199 ServiceToken
+	fmt.Println("------------------------ acc_controller.go WebSocket Login ------------------------")
+	fmt.Println("seq: ", seq, "ServiceToken: ", request.ServiceToken)
 
-	fmt.Println("webSocket_request 用户登录", seq, "ServiceToken", request.ServiceToken)
-
-	if request.UserId == "" || len(request.UserId) >= 20 {
+	if request.UserId == "" || len(request.UserId) > 32 {
 		code = common.UnauthorizedUserId
+		fmt.Println("------------------------ acc_controller.go WebSocket Login-UnauthorizedUserId ------------------------")
 		fmt.Println("用户登录 非法的用户", seq, request.UserId)
-
 		return
 	}
 
 	if !InAppIds(request.AppId) {
 		code = common.Unauthorized
+		fmt.Println("------------------------ acc_controller.go WebSocket Login-Unauthorized ------------------------")
 		fmt.Println("用户登录 不支持的平台", seq, request.AppId)
-
 		return
 	}
 
 	if client.IsLogin() {
+		fmt.Println("------------------------ acc_controller.go WebSocket Login-HadLogin ------------------------")
 		fmt.Println("用户登录 用户已经登录", client.AppId, client.UserId, seq)
 		code = common.OperationFailure
 
@@ -72,8 +74,8 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 	err := cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
 		code = common.ServerError
+		fmt.Println("------------------------ acc_controller.go WebSocket Login-ServerError ------------------------")
 		fmt.Println("用户登录 SetUserOnlineInfo", seq, err)
-
 		return
 	}
 
@@ -84,8 +86,8 @@ func LoginController(client *Client, seq string, message []byte) (code uint32, m
 		Client: client,
 	}
 	clientManager.Login <- login
-
-	fmt.Println("用户登录 成功", seq, client.Addr, request.UserId)
+	fmt.Println("------------------------ acc_controller.go WebSocket Login-Success ------------------------")
+	fmt.Println("seq: ", seq, "addr: ", client.Addr, "userId: ",request.UserId)
 
 	return
 }
@@ -99,17 +101,17 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	request := &models.HeartBeat{}
 	if err := json.Unmarshal(message, request); err != nil {
 		code = common.ParameterIllegal
+		fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat-Fail ------------------------")
 		fmt.Println("心跳接口 解析数据失败", seq, err)
-
 		return
 	}
-
-	fmt.Println("webSocket_request 心跳接口", client.AppId, client.UserId)
+	fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat ------------------------")
+	fmt.Println("appId: ", client.AppId, "userId: ", client.UserId)
 
 	if !client.IsLogin() {
+		fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat-UnLogin ------------------------")
 		fmt.Println("心跳接口 用户未登录", client.AppId, client.UserId, seq)
 		code = common.NotLoggedIn
-
 		return
 	}
 
@@ -117,13 +119,13 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	if err != nil {
 		if err == redis.Nil {
 			code = common.NotLoggedIn
+			fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat-unLogin ------------------------")
 			fmt.Println("心跳接口 用户未登录", seq, client.AppId, client.UserId)
-
 			return
 		} else {
 			code = common.ServerError
-			fmt.Println("心跳接口 GetUserOnlineInfo", seq, client.AppId, client.UserId, err)
-
+			fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat-GetUserOnlineInfo ------------------------")
+			fmt.Println("seq: ", seq, "appId: ",client.AppId,"userId: ", client.UserId, "err: ",err)
 			return
 		}
 	}
@@ -133,8 +135,8 @@ func HeartbeatController(client *Client, seq string, message []byte) (code uint3
 	err = cache.SetUserOnlineInfo(client.GetKey(), userOnline)
 	if err != nil {
 		code = common.ServerError
+		fmt.Println("------------------------ acc_controller.go WebSocket HeartBeat-SetUserOnlineInfo ------------------------")
 		fmt.Println("心跳接口 SetUserOnlineInfo", seq, client.AppId, client.UserId, err)
-
 		return
 	}
 

@@ -31,8 +31,8 @@ func server(param interface{}) (result bool) {
 
 	server := websocket.GetServer()
 	currentTime := uint64(time.Now().Unix())
+	fmt.Println("---------------- 定时任务 ----------------")
 	fmt.Println("定时任务，服务注册", param, server, currentTime)
-
 	cache.SetServerInfo(server, currentTime)
 
 	return
@@ -45,11 +45,11 @@ func serverDefer(param interface{}) (result bool) {
 			fmt.Println("服务下线 stop", r, string(debug.Stack()))
 		}
 	}()
-
+	fmt.Println("---------------- 服务下线 ----------------")
 	fmt.Println("服务下线", param)
 
 	server := websocket.GetServer()
-	cache.DelServerInfo(server)
+	_ = cache.DelServerInfo(server)
 
 	return
 }

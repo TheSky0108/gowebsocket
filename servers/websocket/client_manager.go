@@ -191,7 +191,7 @@ func (manager *ClientManager) GetUserList() (userList []string) {
 		userList = append(userList, v.UserId)
 		fmt.Println("GetUserList", v.AppId, v.UserId, v.Addr)
 	}
-
+	fmt.Println("------------------------ client_manager.go 获取用户列表 ------------------------")
 	fmt.Println("GetUserList", clientManager.Users)
 
 	return
@@ -224,7 +224,7 @@ func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
 // 用户建立连接事件
 func (manager *ClientManager) EventRegister(client *Client) {
 	manager.AddClients(client)
-
+	fmt.Println("------------------------ client_manager.go 用户建立连接 ------------------------")
 	fmt.Println("EventRegister 用户建立连接", client.Addr)
 
 	// client.Send <- []byte("连接成功")
@@ -239,7 +239,7 @@ func (manager *ClientManager) EventLogin(login *login) {
 		userKey := login.GetKey()
 		manager.AddUsers(userKey, login.Client)
 	}
-
+	fmt.Println("------------------------ client_manager.go 用户登录 ------------------------")
 	fmt.Println("EventLogin 用户登录", client.Addr, login.AppId, login.UserId)
 
 	orderId := helper.GetOrderIdTime()
@@ -267,7 +267,7 @@ func (manager *ClientManager) EventUnregister(client *Client) {
 
 	// 关闭 chan
 	// close(client.Send)
-
+	fmt.Println("------------------------ client_manager.go 用户断开连接 ------------------------")
 	fmt.Println("EventUnregister 用户断开连接", client.Addr, client.AppId, client.UserId)
 
 	if client.UserId != "" {
@@ -354,6 +354,7 @@ func ClearTimeoutConnections() {
 	clients := clientManager.GetClients()
 	for client := range clients {
 		if client.IsHeartbeatTimeout(currentTime) {
+			fmt.Println("------------------------ client_manager.go 心跳时间超时，关闭连接 ------------------------")
 			fmt.Println("心跳时间超时 关闭连接", client.Addr, client.UserId, client.LoginTime, client.HeartbeatTime)
 			_ = client.Socket.Close()
 		}
@@ -362,6 +363,7 @@ func ClearTimeoutConnections() {
 
 // 获取全部用户
 func GetUserList() (userList []string) {
+	fmt.Println("------------------------ client_manager.go 获取全部用户 ------------------------")
 	fmt.Println("获取全部用户")
 
 	userList = clientManager.GetUserList()
@@ -371,6 +373,7 @@ func GetUserList() (userList []string) {
 
 // 全员广播
 func AllSendMessages(appId uint32, userId string, data string) {
+	fmt.Println("------------------------ client_manager.go 全员广播 ------------------------")
 	fmt.Println("全员广播", appId, userId)
 
 	ignore := clientManager.GetUserClient(appId, userId)

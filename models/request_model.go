@@ -17,8 +17,8 @@ type Request struct {
 
 // 登录请求数据
 type Login struct {
-	ServiceToken string `json:"serviceToken"` // 验证用户是否登录
-	AppId        uint32 `json:"appId,omitempty"`
+	ServiceToken string `json:"serviceToken"` 	// 验证用户是否登录
+	AppId        uint32 `json:"appId,omitempty"` // omitempty 如果值为空， 则生成的json中没有该字段。
 	UserId       string `json:"userId,omitempty"`
 }
 

@@ -24,6 +24,7 @@ func UserList() (userList []string) {
 	currentTime := uint64(time.Now().Unix())
 	servers, err := cache.GetServerAll(currentTime)
 	if err != nil {
+		fmt.Println("------------------------ user_srv.go 给全体用户发消息 ------------------------")
 		fmt.Println("给全体用户发消息", err)
 
 		return
@@ -67,11 +68,12 @@ func checkUserOnline(appId uint32, userId string) (online bool, err error) {
 	userOnline, err := cache.GetUserOnlineInfo(key)
 	if err != nil {
 		if err == redis.Nil {
+			fmt.Println("------------------------ user_srv.go 查询用户是否在线 ------------------------")
 			fmt.Println("GetUserOnlineInfo", appId, userId, err)
 
 			return false, nil
 		}
-
+		fmt.Println("------------------------ user_srv.go 查询用户是否在线 ------------------------")
 		fmt.Println("GetUserOnlineInfo", appId, userId, err)
 
 		return
@@ -89,6 +91,7 @@ func SendUserMessage(appId uint32, fromId string, toId string, msgId, message st
 	// TODO::需要判断不在本机的情况
 	sendResults, err = SendUserMessageLocal(appId, toId, data)
 	if err != nil {
+		fmt.Println("------------------------ user_srv.go 给用户发送消息 ------------------------")
 		fmt.Println("给用户发送消息", appId, fromId, toId, err)
 	}
 	return
@@ -98,6 +101,7 @@ func SendUserMessage(appId uint32, fromId string, toId string, msgId, message st
 func SendUserMessageLocal(appId uint32, toId string, data string) (sendResults bool, err error) {
 	client := GetToUserClient(appId,toId)
 	if client == nil {
+		fmt.Println("------------------------ user_srv.go 用户不在线 ------------------------")
 		err = errors.New("用户不在线")
 		return
 	}
@@ -113,6 +117,7 @@ func SendUserMessageAll(appId uint32, fromId string, msgId, cmd, message string)
 	currentTime := uint64(time.Now().Unix())
 	servers, err := cache.GetServerAll(currentTime)
 	if err != nil {
+		fmt.Println("------------------------ user_srv.go 给全体用户发消息 ------------------------")
 		fmt.Println("给全体用户发消息", err)
 		return
 	}

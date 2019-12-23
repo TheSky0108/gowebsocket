@@ -19,7 +19,7 @@ import (
 
 var (
 	clientManager = NewClientManager() // 管理者
-	appIds        = []uint32{101, 102} // 全部的平台
+	appIds        = []uint32{101, 102, 103} // 全部的平台 101---Web 102---Android 103---iOS
 
 	serverIp   string
 	serverPort string
@@ -49,7 +49,6 @@ func InAppIds(appId uint32) (inAppId bool) {
 	for _, value := range appIds {
 		if value == appId {
 			inAppId = true
-
 			return
 		}
 	}
@@ -88,6 +87,7 @@ func wsPage(w http.ResponseWriter, req *http.Request) {
 	conn, err := (&websocket.Upgrader{
 		// 允许跨域请求
 		CheckOrigin: func(r *http.Request) bool {
+			fmt.Println("------------------------ init_acc.go WebSocket 升级协议 ------------------------")
 			fmt.Println("升级协议（允许跨域请求）", "ua:", r.Header["User-Agent"], "referer:", r.Header["Referer"])
 			return true
 		},
@@ -97,7 +97,7 @@ func wsPage(w http.ResponseWriter, req *http.Request) {
 		http.NotFound(w, req)
 		return
 	}
-
+	fmt.Println("------------------------ init_acc.go WebSocket 建立连接 ------------------------")
 	fmt.Println("webSocket 建立连接:", conn.RemoteAddr().String())
 
 	currentTime := uint64(time.Now().Unix())
