@@ -20,5 +20,6 @@ func Index(c *gin.Context) {
 		"httpUrl":      viper.GetString("app.httpUrl"),
 		"webSocketUrl": viper.GetString("app.webSocketUrl"),
 	}
-	c.HTML(http.StatusOK, "index.tpl", data)
+	//c.HTML(http.StatusOK, "index.tpl", data)
+	c.HTML(http.StatusOK, "index.html", data)
 }

@@ -28,7 +28,9 @@ func ExampleNewClient() {
 	})
 
 	pong, err := client.Ping().Result()
+	fmt.Println("----------------- redis_lib.go  -----------------")
 	fmt.Println("初始化redis:", pong, err)
+	fmt.Println("-------------------------------------------------")
 	// Output: PONG <nil>
 }
 

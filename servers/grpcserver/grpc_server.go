@@ -138,7 +138,9 @@ func (s *server) GetUserList(c context.Context, req *protobuf.GetUserListReq) (r
 func Init() {
 
 	rpcPort := viper.GetString("app.rpcPort")
+	fmt.Println("---------------- grpc_server.go  ----------------")
 	fmt.Println("rpc server 启动", rpcPort)
+	fmt.Println("-------------------------------------------------")
 
 	lis, err := net.Listen("tcp", ":"+rpcPort)
 	if err != nil {

@@ -38,21 +38,28 @@ func NewTestMsg(from string, to string, Msg string) (message *Message) {
 	return
 }
 
-//{
-//"seq":"1577033806984-838426",
-//"cmd":"msg",
-//"response":{
-//	"code":200,
-//	"codeMsg":"Ok",
-//	"data":{
-//		"target":"",
-//		"type":"text",
-//		"msg":"213123213213",
-//		"from":"29868"
-//      "to":"29868"
-//		}
-//	}
-//}
+/*
+seq: 消息的唯一id
+cmd: 消息的动作：enter(login)、msg、exit(logout)
+response：返回前端的数据
+from： 消息发送者id
+to：   消息接收者id
+{
+"seq":"1577033806984-838426",
+"cmd":"msg",
+"response":{
+	"code":200,
+	"codeMsg":"Ok",
+	"data":{
+		"target":"",
+		"type":"text",
+		"msg":"213123213213",
+		"from":"29868",
+     	"to":"29868"
+		}
+	}
+}
+*/
 func getTextMsgData(cmd, fromId, toId, msgId, message string) string {
 	textMsg := NewTestMsg(fromId, toId, message)
 	head := NewResponseHead(msgId, cmd, common.OK, "Ok", textMsg)

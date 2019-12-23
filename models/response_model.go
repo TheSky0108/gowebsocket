@@ -23,12 +23,12 @@ type Response struct {
 }
 
 // push 数据结构体
-type PushMsg struct {
-	Seq  string `json:"seq"`
-	Uuid uint64 `json:"uuid"`
-	Type string `json:"type"`
-	Msg  string `json:"msg"`
-}
+//type PushMsg struct {
+//	Seq  string `json:"seq"`
+//	Uuid uint64 `json:"uuid"`
+//	Type string `json:"type"`
+//	Msg  string `json:"msg"`
+//}
 
 // 设置返回消息
 func NewResponseHead(seq string, cmd string, code uint32, codeMsg string, data interface{}) *Head {
