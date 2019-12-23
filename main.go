@@ -26,12 +26,6 @@ func main() {
 	// 初始化配置文件
 	initConfig()
 
-	// 初始化Redis相关配置
-	initRedis()
-
-	// 初始化gin启动模式，默认DebugMode
-	//initGinMode(gin.ReleaseMode)
-
 	// 初始化路由(包含日志)
 	router := initRouter()
 
@@ -65,6 +59,10 @@ func initConfig() {
 	if err != nil {             // Handle errors reading the config file
 		panic(fmt.Errorf("Fatal error config file: %s \n", err))
 	}
+
+	// 初始化Redis相关配置
+	initRedis()
+
 	fmt.Println("---------------- main.go 配置文件 ----------------")
 	fmt.Println("config app:", viper.Get("app"))
 	fmt.Println("config redis:", viper.Get("redis"))
@@ -73,6 +71,28 @@ func initConfig() {
 
 func initRedis() {
 	redislib.ExampleNewClient()
+}
+
+func initRouter() *gin.Engine {
+
+	// 初始化gin启动模式，默认DebugMode
+	//initGinMode(gin.ReleaseMode)
+
+	fmt.Println("---------------- main.go 初始化路由 --------------")
+	// 如果想完全使用自定义的Logger() 则需要使用gin.New()来生成对象
+	// 然后再手动指定Logger(),Recovery()
+	// 否则gin会使用两个日志框架，一个默认的，一个自定义的
+	//router := gin.Default()
+	router := gin.New()
+	// 使用自定义日志框架
+	router.Use(middleware.LoggerToFile(), gin.Recovery())
+
+	// 初始化路由
+	routers.Init(router)
+	routers.WebsocketInit()
+	fmt.Println("路由初始化完成")
+	fmt.Println("-------------------------------------------------")
+	return router
 }
 
 func initGinMode(ginMode string) {
@@ -104,23 +124,6 @@ func initGinMode(ginMode string) {
 	*/
 }
 
-func initRouter() *gin.Engine {
-	fmt.Println("---------------- main.go 初始化路由 --------------")
-	// 如果想完全使用自定义的Logger() 则需要使用gin.New()来生成对象
-	// 然后再手动指定Logger(),Recovery()
-	// 否则gin会使用两个日志框架，一个默认的，一个自定义的
-	//router := gin.Default()
-	router := gin.New()
-	// 使用自定义日志框架
-	router.Use(middleware.LoggerToFile(), gin.Recovery())
-
-	// 初始化路由
-	routers.Init(router)
-	routers.WebsocketInit()
-	fmt.Println("路由初始化完成")
-	fmt.Println("-------------------------------------------------")
-	return router
-}
 
 func initTimerTask() {
 	// 定时任务
