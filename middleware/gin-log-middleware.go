@@ -112,6 +112,7 @@ func LoggerToFile() gin.HandlerFunc {
 			"execution_time": executionTime,
 			"client_ip":      clientIP,
 		}).Info()
+
 		// 输出到控制台
 		fmt.Println("------------------------ Request ------------------------")
 		fmt.Printf(

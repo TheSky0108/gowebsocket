@@ -10,17 +10,24 @@ package models
 import "gowebsocket/common"
 
 const (
-	MessageTypeText = "text"
+	MessageTypeText   = "text"
+	MessageTypeImage  = "image"
+	MessageTypeVoice  = "voice"
+	MessageCmdMsg     = "msg"
+	MessageCmdEnter   = "enter"
+	MessageCmdExit    = "exit"
 
-	MessageCmdMsg   = "msg"
-	MessageCmdEnter = "enter"
-	MessageCmdExit  = "exit"
+	SystemNoticeType  = "00"
+	ChatNoticeType    = "01"
+	PraiseNoticeType  = "02"
+	DissNoticeType    = "02"
+	CommentNoticeType = "03"
 )
 
 // 消息的定义
 type Message struct {
 	Target string `json:"target"` // 目标
-	Type   string `json:"type"`   // 消息类型 text/img/
+	Type   string `json:"type"`   // 消息类型 text/image/
 	Msg    string `json:"msg"`    // 消息内容
 	From   string `json:"from"`   // 发送者
 	To     string `json:"to"`     // 接收者

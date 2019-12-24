@@ -5,6 +5,7 @@ require (
 	github.com/gin-contrib/sse v0.1.0 // indirect
 	github.com/gin-gonic/gin v1.4.0
 	github.com/go-redis/redis v0.0.0-20190719092155-6bc7daa5b1e8
+	github.com/go-sql-driver/mysql v1.4.1
 	github.com/golang/protobuf v1.3.2
 	github.com/gorilla/websocket v1.4.0
 	github.com/hashicorp/hcl v1.0.1-0.20190611123218-cf7d376da96d // indirect

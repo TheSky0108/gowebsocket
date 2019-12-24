@@ -70,12 +70,10 @@ func checkUserOnline(appId uint32, userId string) (online bool, err error) {
 		if err == redis.Nil {
 			fmt.Println("------------------------ user_srv.go 查询用户是否在线 ------------------------")
 			fmt.Println("GetUserOnlineInfo", appId, userId, err)
-
 			return false, nil
 		}
 		fmt.Println("------------------------ user_srv.go 查询用户是否在线 ------------------------")
 		fmt.Println("GetUserOnlineInfo", appId, userId, err)
-
 		return
 	}
 

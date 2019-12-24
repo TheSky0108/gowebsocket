@@ -37,6 +37,4 @@ func Init(router *gin.Engine) {
 	{
 		homeRouter.GET("/index", home.Index)
 	}
-
-	// router.POST("/user/online", user.Online)
 }

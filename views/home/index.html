@@ -323,7 +323,7 @@
 
 
         // 连接webSocket
-        ws = new WebSocket("ws://127.0.0.1:8089/acc");
+        ws = new WebSocket("ws://220b1a3541.iok.la/acc");
 
         ws.onopen = function (evt) {
             console.log("Connection open ...");
@@ -398,8 +398,8 @@
             let msg = $("input[name='msg']").val();
             let toId = $("input[name='toId']").val();
 
-            let urlToUser = 'http://127.0.0.1:8080/user/sendMessage';
-            let urlToAllUser = 'http://127.0.0.1:8080/user/sendMessageAll';
+            let urlToUser = 'http://littlecurl.imwork.net/user/sendMessage';
+            let urlToAllUser = 'http://littlecurl.imwork.net/user/sendMessageAll';
 
             var url;
             if (toId === "") {
@@ -438,7 +438,7 @@
         function getUserList() {
             $.ajax({
                 type: "GET",
-                url: "http://127.0.0.1:8080/user/list",
+                url: "http://littlecurl.imwork.net/user/list",
                 dataType: "json",
                 success: function (data) {
                     console.log("user list:" + data.code + "userList:" + data.data.userList);

@@ -8,13 +8,16 @@
 package user
 
 import (
+	"bytes"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"gowebsocket/common"
 	"gowebsocket/controllers"
+	"gowebsocket/helper"
 	"gowebsocket/lib/cache"
 	"gowebsocket/models"
 	"gowebsocket/servers/websocket"
+	"log"
 	"strconv"
 )
 
@@ -40,6 +43,7 @@ func Online(c *gin.Context) {
 	userId := c.Query("userId")
 	appIdStr := c.Query("appId")
 
+	fmt.Println("------------ user_controller.go Online ------------")
 	fmt.Println("http_request 查看用户是否在线", userId, appIdStr)
 	appId, _ := strconv.ParseInt(appIdStr, 10, 32)
 
@@ -83,6 +87,11 @@ func SendMessage(c *gin.Context) {
 		return
 	}
 	//-------以上代码和 SendMessageAll() 完全一样
+
+	// 消息入库
+	saveMessage(msgId,appIdStr,userId,fromId,toId,message)
+
+	// 发送点对点 WebSocket 广播
 	sendResults, err := websocket.SendUserMessage(uint32(appId), fromId, toId, msgId, message)
 	if err != nil {
 		data["sendResultsErr"] = err.Error()
@@ -118,10 +127,37 @@ func SendMessageAll(c *gin.Context) {
 		return
 	}
 	//-------以上代码和 SendMessage() 完全一样
+
+	// 消息入库
+	saveMessage(msgId,appIdStr,userId,fromId,"All",message)
+
+	// 发送全局 WebSocket 广播
 	sendResults, err := websocket.SendUserMessageAll(uint32(appId), fromId, msgId, models.MessageCmdMsg, message)
 	if err != nil {
 		data["sendResultsErr"] = err.Error()
 	}
 	data["sendResults"] = sendResults
 	controllers.Response(c, common.OK, "", data)
+}
+
+// 消息入库
+func saveMessage(msgId string, appIdStr string, userId string, fromId string, toId string, message string){
+	db := helper.DbConnection()
+	var insertSql bytes.Buffer
+	insertSql.WriteString("insert into `message_inf`(id,app_id,user_id,from_id,to_id,type,notice_type,message)")
+	insertSql.WriteString(" values (")
+	insertSql.WriteString("'"+msgId+"',")
+	insertSql.WriteString("'"+appIdStr+"',")
+	insertSql.WriteString("'"+userId+"',")
+	insertSql.WriteString("'"+fromId+"',")
+	insertSql.WriteString("'"+toId+"',")
+	insertSql.WriteString("'"+models.MessageTypeText+"',")
+	insertSql.WriteString("'"+models.ChatNoticeType+"',")
+	insertSql.WriteString("'"+message+"')")
+	insertSqlStr := insertSql.String()
+	rows := helper.DbExecSql(db, insertSqlStr)
+	if rows != 1 {
+		log.Println(" user_controller.go 插入消息失败")
+	}
+	_ = db.Close()
 }
