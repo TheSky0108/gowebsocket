@@ -15,7 +15,7 @@
 *.swp
 *.log
 .DS_Store
-
+test/
 
 
 

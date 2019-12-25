@@ -81,11 +81,17 @@ func initRouter() *gin.Engine {
 	fmt.Println("---------------- main.go 初始化路由 --------------")
 	// 如果想完全使用自定义的Logger() 则需要使用gin.New()来生成对象
 	// 然后再手动指定Logger(),Recovery()
-	// 否则gin会使用两个日志框架，一个默认的，一个自定义的
-	//router := gin.Default()
-	router := gin.New()
-	// 使用自定义日志框架
-	router.Use(middleware.LoggerToFile(), gin.Recovery())
+	// 否则gin会使用两个日志框架，一个默认的，一个自定义的，影响性能
+	var router *gin.Engine
+
+	//使用自定义日志框架
+	myLogger := middleware.LoggerToFile()
+	if myLogger != nil {
+		router = gin.New()
+		router.Use(myLogger, gin.Recovery())
+	} else {
+		router = gin.Default()
+	}
 
 	// 初始化路由
 	routers.Init(router)
@@ -113,7 +119,6 @@ func initGinMode(ginMode string) {
 	[GIN-debug] Loaded HTML Templates (3):
 		-
 		- index.html
-		- index.tpl
 
 	[GIN-debug] GET    /user/list                --> gowebsocket/controllers/user.List (3 handlers)
 	[GIN-debug] GET    /user/online              --> gowebsocket/controllers/user.Online (3 handlers)
@@ -123,7 +128,6 @@ func initGinMode(ginMode string) {
 	[GIN-debug] GET    /home/index               --> gowebsocket/controllers/home.Index (3 handlers)
 	*/
 }
-
 
 func initTimerTask() {
 	// 定时任务

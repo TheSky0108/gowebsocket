@@ -1,16 +1,18 @@
 # app配置
 app:
   # 日志文件位置
-  #logFile: log/gin.log
+  #logFile: log/ginlog
   logFilePath: log
-  logFileName: gin.log
-  httpPort: 8080
+  logFileName: ginlog
+  httpPort: 8000
   # WebSocket端口
-  webSocketPort: 8089
+  webSocketPort: 8001
   rpcPort: 9001
-  httpUrl: 127.0.0.1:8080
+  httpUrl: 127.0.0.1:8000
+  httpUrlForView: littlecurl.xyz:8000
   # WebSocket完整地址
-  webSocketUrl: 127.0.0.1:8089
+  webSocketUrl: 127.0.0.1:8001
+  webSocketUrlForView: littlecurl.xyz:8001/acc
 
 
 redis:
@@ -24,5 +26,14 @@ mysql:
   dbUser: "root"
   dbPassword: ":123456"
   dbTcp: "@tcp(localhost:3306)"
-  dbName: "/local_db"
+  #dbName: "/local_db"
+  dbName: "/shaohua_db"
   dbParameters: "?charset=utf8mb4"
+
+html:
+  title: "聊天首页"
+  contentTypeForm: "application/x-www-form-urlencoded"
+  sendMessageUrl: "http://littlecurl.xyz:8000/user/sendMessage"
+  sendMessageAllUrl: "http://littlecurl.xyz:8000/user/sendMessageAll"
+  getUserListUrl: "http://littlecurl.xyz:8000/user/list"
+  webSocketUrl: "ws://littlecurl.xyz:8001/acc"

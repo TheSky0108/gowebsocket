@@ -17,19 +17,19 @@ func LoggerToFile() gin.HandlerFunc {
 
 	logFilePath := viper.GetString("app.logFilePath")
 	logFileName := viper.GetString("app.logFileName")
-
 	// 日志文件
 	fileName := path.Join(logFilePath, logFileName)
 
 	// 写入文件
-	src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	//src, err := os.OpenFile(fileName, os.O_APPEND|os.O_WRONLY, os.ModeAppend)
+	src, err := os.OpenFile(fileName, os.O_TRUNC|os.O_RDWR|os.O_CREATE, os.ModeAppend)
 	if err != nil {
 		// 如果创建失败，尝试手动创建一下
 		fmt.Println("**********日志文件创建失败**********")
 		fmt.Println(src, err)
 		return nil
 	}
-
+	fmt.Println("**********日志文件创建成功**********")
 	// 实例化
 	logger := logrus.New()
 

@@ -15,11 +15,14 @@ import (
 
 // 查看用户是否在线
 func Index(c *gin.Context) {
+	//给前端页面传递数据
 	data := gin.H{
-		"title":        "聊天首页",
-		"httpUrl":      viper.GetString("app.httpUrl"),
-		"webSocketUrl": viper.GetString("app.webSocketUrl"),
+		"title": viper.GetString("html.title"),
+		"contentTypeForm": viper.GetString("html.contentTypeForm"),
+		"sendMessageUrl": viper.GetString("html.sendMessageUrl"),
+		"sendMessageAllUrl": viper.GetString("html.sendMessageAllUrl"),
+		"getUserListUrl": viper.GetString("html.getUserListUrl"),
+		"webSocketUrl": viper.GetString("html.webSocketUrl"),
 	}
-	//c.HTML(http.StatusOK, "index.tpl", data)
 	c.HTML(http.StatusOK, "index.html", data)
 }
