@@ -276,3 +276,5 @@ time="2019-12-24T20:48:48+08:00" level=info client_ip=10.10.10.66 execution_time
 time="2019-12-24T20:50:03+08:00" level=info client_ip=10.10.10.66 execution_time=6.8667ms req_method=POST req_uri=/user/sendMessageAll status_code=500
 time="2019-12-24T20:50:20+08:00" level=info client_ip=10.10.10.66 execution_time=8.9782ms req_method=POST req_uri=/user/sendMessageAll status_code=200
 time="2019-12-24T20:50:29+08:00" level=info client_ip=10.10.10.66 execution_time=9.9737ms req_method=POST req_uri=/user/sendMessageAll status_code=200
+time="2019-12-25T09:35:40+08:00" level=info client_ip=127.0.0.1 execution_time=3.9908ms req_method=GET req_uri=/home/index status_code=200
+time="2019-12-25T09:35:42+08:00" level=info client_ip=10.10.10.66 execution_time=0s req_method=GET req_uri=/user/list status_code=200

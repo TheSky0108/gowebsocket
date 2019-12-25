@@ -15,9 +15,9 @@
 *.swp
 *.log
 .DS_Store
-config/app.yaml
-main
-main_linux
-gowebsocket
+
+
+
+
 
 

@@ -1,0 +1,28 @@
+# app配置
+app:
+  # 日志文件位置
+  #logFile: log/gin.log
+  logFilePath: log
+  logFileName: gin.log
+  httpPort: 8080
+  # WebSocket端口
+  webSocketPort: 8089
+  rpcPort: 9001
+  httpUrl: 127.0.0.1:8080
+  # WebSocket完整地址
+  webSocketUrl: 127.0.0.1:8089
+
+
+redis:
+  addr: "localhost:6379"
+  password: ""
+  DB: 0
+  poolSize: 30
+  minIdleConns: 30
+
+mysql:
+  dbUser: "root"
+  dbPassword: ":123456"
+  dbTcp: "@tcp(localhost:3306)"
+  dbName: "/local_db"
+  dbParameters: "?charset=utf8mb4"
