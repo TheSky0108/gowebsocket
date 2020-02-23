@@ -33,7 +33,20 @@ mysql:
 html:
   title: "聊天首页"
   contentTypeForm: "application/x-www-form-urlencoded"
-  sendMessageUrl: "http://littlecurl.xyz:8000/user/sendMessage"
-  sendMessageAllUrl: "http://littlecurl.xyz:8000/user/sendMessageAll"
-  getUserListUrl: "http://littlecurl.xyz:8000/user/list"
-  webSocketUrl: "ws://littlecurl.xyz:8001/acc"
+  # HTTP
+  #  sendMessageUrl: "http://littlecurl.xyz:8000/user/sendMessage"
+  #  sendMessageAllUrl: "http://littlecurl.xyz:8000/user/sendMessageAll"
+  #  getUserListUrl: "http://littlecurl.xyz:8000/user/list"
+  #  webSocketUrl: "ws://littlecurl.xyz:8001/acc"
+
+  # HTTPS+反向代理
+  sendMessageUrl: "https://littlecurl.xyz/user/sendMessage"
+  sendMessageAllUrl: "http://littlecurl.xyz/user/sendMessageAll"
+  getUserListUrl: "http://littlecurl.xyz/user/list"
+  webSocketUrl: "wss://littlecurl.xyz/acc"
+
+  # 本地
+  #sendMessageUrl: "http://192.168.124.5:8000/user/sendMessage"
+  #sendMessageAllUrl: "http://192.168.124.5:8000/user/sendMessageAll"
+  #getUserListUrl: "http://192.168.124.5:8000/user/list"
+  #webSocketUrl: "ws://192.168.124.5:8001/acc"

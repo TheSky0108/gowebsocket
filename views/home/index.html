@@ -2,6 +2,8 @@
 <html>
 
 <head>
+    <!-- 自动升级为 Https -->
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 <!--  接收后台home_controller.go传过来的内容  -->
     <title>{{ .title }}</title>
 <!--    <title>聊天首页</title>-->
@@ -261,7 +263,7 @@
             </form>
         </div>
     </div>
-    <script src="http://91vh.com/js/jquery-2.1.4.min.js"></script>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
     <script type="text/javascript">
 
         // 将这些配置写到后端集中管理，这样就不用一边改后端，一边改页面了
@@ -276,6 +278,7 @@
         // 连接webSocket
         ws = new WebSocket(webSocketUrl);
 
+        // 登录、保活心跳
         ws.onopen = function (evt) {
             console.log("Connection open ...");
             // 随机数字做id

@@ -102,7 +102,7 @@ func SendMessage(c *gin.Context) {
 
 // 给全员发送消息
 func SendMessageAll(c *gin.Context) {
-	// 获取参数
+	// 获取表单提交参数，注意不是Json，而是表单数据
 	appIdStr := c.PostForm("appId")
 	userId := c.PostForm("userId")
 	fromId := c.PostForm("fromId")
