@@ -84,8 +84,9 @@ func checkUserOnline(appId uint32, userId string) (online bool, err error) {
 
 // 给具体用户发送消息
 func SendUserMessage(appId uint32, fromId string, toId string, msgId, message string) (sendResults bool, err error) {
-	// GetTextMsgData
-	data := models.GetTextMsgData(fromId, toId, msgId, message)
+	currentTime := uint64(time.Now().Unix())
+	// 封装成 data
+	data := models.GetTextMsgData(fromId, toId, msgId, message, currentTime+8*3600)
 	// TODO::需要判断不在本机的情况
 	sendResults, err = SendUserMessageLocal(appId, toId, data)
 	if err != nil {
@@ -97,7 +98,7 @@ func SendUserMessage(appId uint32, fromId string, toId string, msgId, message st
 
 // 给本机用户发送消息
 func SendUserMessageLocal(appId uint32, toId string, data string) (sendResults bool, err error) {
-	client := GetToUserClient(appId,toId)
+	client := GetToUserClient(appId, toId)
 	if client == nil {
 		fmt.Println("------------------------ user_srv.go 用户不在线 ------------------------")
 		err = errors.New("用户不在线")
@@ -112,6 +113,7 @@ func SendUserMessageLocal(appId uint32, toId string, data string) (sendResults b
 // 给全体用户发消息
 func SendUserMessageAll(appId uint32, fromId string, msgId, cmd, message string) (sendResults bool, err error) {
 	sendResults = true
+	// 当前系统时间
 	currentTime := uint64(time.Now().Unix())
 	servers, err := cache.GetServerAll(currentTime)
 	if err != nil {
@@ -120,11 +122,14 @@ func SendUserMessageAll(appId uint32, fromId string, msgId, cmd, message string)
 		return
 	}
 	for _, server := range servers {
+		// 本地转发
 		if IsLocal(server) {
 			// GetTextMsgData
-			data := models.GetMsgData(fromId, msgId, cmd, message)
+			data := models.GetMsgData(fromId, msgId, cmd, message, currentTime)
 			AllSendMessages(appId, fromId, data)
-		} else {
+		} else
+		// rpc转发
+		{
 			grpcclient.SendMsgAll(server, msgId, appId, fromId, cmd, message)
 		}
 	}

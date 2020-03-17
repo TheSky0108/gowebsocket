@@ -75,7 +75,6 @@ func (u *UserOnline) LogOut() {
 // 用户是否在线
 func (u *UserOnline) IsOnline() (online bool) {
 	if u.IsLogoff {
-
 		return
 	}
 

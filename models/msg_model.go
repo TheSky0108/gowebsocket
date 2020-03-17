@@ -10,12 +10,12 @@ package models
 import "gowebsocket/common"
 
 const (
-	MessageTypeText   = "text"
-	MessageTypeImage  = "image"
-	MessageTypeVoice  = "voice"
-	MessageCmdMsg     = "msg"
-	MessageCmdEnter   = "enter"
-	MessageCmdExit    = "exit"
+	MessageTypeText  = "text"
+	MessageTypeImage = "image"
+	MessageTypeVoice = "voice"
+	MessageCmdMsg    = "msg"
+	MessageCmdEnter  = "enter"
+	MessageCmdExit   = "exit"
 
 	SystemNoticeType  = "00"
 	ChatNoticeType    = "01"
@@ -26,11 +26,12 @@ const (
 
 // 消息的定义
 type Message struct {
-	Target string `json:"target"` // 目标
-	Type   string `json:"type"`   // 消息类型 text/image/
-	Msg    string `json:"msg"`    // 消息内容
-	From   string `json:"from"`   // 发送者
-	To     string `json:"to"`     // 接收者
+	Target   string `json:"target"`   // 目标
+	Type     string `json:"type"`     // 消息类型 text/image/
+	Msg      string `json:"msg"`      // 消息内容
+	From     string `json:"from"`     // 发送者
+	To       string `json:"to"`       // 接收者
+	SendTime uint64 `json:"sendTime"` // 发送时间（UNIX() 时间）
 }
 
 func NewTestMsg(from string, to string, Msg string) (message *Message) {
@@ -40,6 +41,19 @@ func NewTestMsg(from string, to string, Msg string) (message *Message) {
 		From: from,
 		To:   to,
 		Msg:  Msg,
+	}
+
+	return
+}
+
+func NewTestMsgWithSendTime(from string, to string, Msg string, sendTime uint64) (message *Message) {
+
+	message = &Message{
+		Type:     MessageTypeText,
+		From:     from,
+		To:       to,
+		Msg:      Msg,
+		SendTime: sendTime,
 	}
 
 	return
@@ -63,6 +77,7 @@ to：   消息接收者id
 		"msg":"213123213213",
 		"from":"29868",
      	"to":"29868"
+		"sendTime":1582804913
 		}
 	}
 }
@@ -73,16 +88,22 @@ func getTextMsgData(cmd, fromId, toId, msgId, message string) string {
 	return head.String()
 }
 
-// 给全体用户发消息，文本消息
-// userId, msgId, cmd, message
-func GetMsgData(userId, msgId, cmd, message string) string {
-	return getTextMsgData(cmd, userId, "All", msgId, message)
+func getTextMsgDataWithSendTime(cmd, fromId, toId, msgId, message string, sendTime uint64) string {
+	textMsg := NewTestMsgWithSendTime(fromId, toId, message, sendTime)
+	head := NewResponseHead(msgId, cmd, common.OK, "Ok", textMsg)
+	return head.String()
 }
 
-// 给具体用户发消息，文本消息
-// toId, msgId, message
-func GetTextMsgData(fromId, toId, msgId, message string) string {
-	return getTextMsgData("msg", fromId, toId, msgId, message)
+// 封装 Data
+// 给 All 用户发送消息
+func GetMsgData(userId, msgId, cmd, message string, sendTime uint64) string {
+	return getTextMsgDataWithSendTime(cmd, userId, "All", msgId, message, sendTime)
+}
+
+// 封装 Data
+// 给指定用户发送消息
+func GetTextMsgData(fromId, toId, msgId, message string, sendTime uint64) string {
+	return getTextMsgDataWithSendTime("msg", fromId, toId, msgId, message, sendTime)
 }
 
 // 用户进入消息

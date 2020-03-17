@@ -120,15 +120,12 @@ func (manager *ClientManager) DelClients(client *Client) {
 
 // 获取用户的连接
 func (manager *ClientManager) GetUserClient(appId uint32, userId string) (client *Client) {
-
 	manager.UserLock.RLock()
 	defer manager.UserLock.RUnlock()
-
 	userKey := GetUserKey(appId, userId)
 	if value, ok := manager.Users[userKey]; ok {
 		client = value
 	}
-
 	return
 }
 
@@ -212,7 +209,6 @@ func (manager *ClientManager) GetUserClients() (clients []*Client) {
 
 // 向全部成员(除了自己)发送数据
 func (manager *ClientManager) sendAll(message []byte, ignore *Client) {
-
 	clients := manager.GetUserClients()
 	for _, conn := range clients {
 		if conn != ignore {
@@ -375,7 +371,6 @@ func GetUserList() (userList []string) {
 func AllSendMessages(appId uint32, userId string, data string) {
 	fmt.Println("------------------------ client_manager.go 全员广播 ------------------------")
 	fmt.Println("全员广播", appId, userId)
-
 	ignore := clientManager.GetUserClient(appId, userId)
 	clientManager.sendAll([]byte(data), ignore)
 }

@@ -1,34 +1,39 @@
-# app配置
-app:
-  # 日志文件位置
-  #logFile: log/ginlog
-  logFilePath: log
-  logFileName: ginlog
-  httpPort: 8000
-  # WebSocket端口
-  webSocketPort: 8001
-  rpcPort: 9001
-  httpUrl: 127.0.0.1:8000
-  httpUrlForView: littlecurl.xyz:8000
-  # WebSocket完整地址
-  webSocketUrl: 127.0.0.1:8001
-  webSocketUrlForView: littlecurl.xyz:8001/acc
-
-
+mysql:
+  dbUser: "root"
+  dbPassword: ":123456"
+  dbTcp: "@tcp(localhost:3306)"
+  #dbName: "/local_db"
+  dbName: "/shaohua"
+  dbParameters: "?charset=utf8mb4"
+  
 redis:
   addr: "localhost:6379"
   password: ""
   DB: 0
   poolSize: 30
   minIdleConns: 30
-
-mysql:
-  dbUser: "root"
-  dbPassword: ":123456"
-  dbTcp: "@tcp(localhost:3306)"
-  #dbName: "/local_db"
-  dbName: "/shaohua_db"
-  dbParameters: "?charset=utf8mb4"
+  
+# app配置
+app:
+  # 日志文件位置
+  #logFile: log/ginlog
+  logFilePath: log
+  logFileName: websocket
+  httpPort: 8000
+  # WebSocket端口
+  webSocketPort: 8001
+  rpcPort: 9001
+  httpUrl: http://littlecurl.xyz
+  httpUrlForView: http://littlecurl.xyz
+  # WebSocket完整地址
+  webSocketUrl: ws://littlecurl.xyz/acc
+  webSocketUrlForView: ws://littlecurl.xyz/acc
+  #
+#  httpUrl: http://localhost
+#  httpUrlForView: http://localhost
+#  # WebSocket完整地址
+#  webSocketUrl: ws://littlecurl.imwork.net/acc
+#  webSocketUrlForView: ws://littlecurl.imwork.net/acc
 
 html:
   title: "聊天首页"
@@ -41,12 +46,65 @@ html:
 
   # HTTPS+反向代理
   sendMessageUrl: "https://littlecurl.xyz/user/sendMessage"
-  sendMessageAllUrl: "http://littlecurl.xyz/user/sendMessageAll"
-  getUserListUrl: "http://littlecurl.xyz/user/list"
+  sendMessageAllUrl: "https://littlecurl.xyz/user/sendMessageAll"
+  getUserListUrl: "https://littlecurl.xyz/user/list"
   webSocketUrl: "wss://littlecurl.xyz/acc"
 
   # 本地
-  #sendMessageUrl: "http://192.168.124.5:8000/user/sendMessage"
-  #sendMessageAllUrl: "http://192.168.124.5:8000/user/sendMessageAll"
-  #getUserListUrl: "http://192.168.124.5:8000/user/list"
-  #webSocketUrl: "ws://192.168.124.5:8001/acc"
+#  sendMessageUrl: "http://localhost:8000/user/sendMessage"
+#  sendMessageAllUrl: "http://localhost:8000/user/sendMessageAll"
+#  getUserListUrl: "http://localhost:8000/user/list"
+#  webSocketUrl: "ws://localhost:8001/acc"
+
+## app配置
+#app:
+#  # 日志文件位置
+#  #logFile: log/ginlog
+#  logFilePath: log
+#  logFileName: websocket
+#  httpPort: 8000
+#  # WebSocket端口
+#  webSocketPort: 8001
+#  rpcPort: 9001
+#  httpUrl: 127.0.0.1:8000
+#  httpUrlForView: littlecurl.xyz:8000
+#  # WebSocket完整地址
+#  webSocketUrl: 127.0.0.1:8001
+#  webSocketUrlForView: littlecurl.xyz:8001/acc
+#
+#
+#html:
+#  title: "聊天首页"
+#  contentTypeForm: "application/x-www-form-urlencoded"
+#  # HTTP
+#  #  sendMessageUrl: "http://littlecurl.xyz:8000/user/sendMessage"
+#  #  sendMessageAllUrl: "http://littlecurl.xyz:8000/user/sendMessageAll"
+#  #  getUserListUrl: "http://littlecurl.xyz:8000/user/list"
+#  #  webSocketUrl: "ws://littlecurl.xyz:8001/acc"
+#
+#  # HTTPS+反向代理
+#  sendMessageUrl: "https://littlecurl.xyz/user/sendMessage"
+#  sendMessageAllUrl: "https://littlecurl.xyz/user/sendMessageAll"
+#  getUserListUrl: "https://littlecurl.xyz/user/list"
+#  webSocketUrl: "wss://littlecurl.xyz/acc"
+#
+#  # 本地
+#  #sendMessageUrl: "http://localhost:8000/user/sendMessage"
+#  #sendMessageAllUrl: "http://localhost:8000/user/sendMessageAll"
+#  #getUserListUrl: "http://localhost:8000/user/list"
+#  #webSocketUrl: "ws://localhost:8001/acc"
+#redis:
+#  addr: "localhost:6379"
+#  password: ""
+#  DB: 0
+#  poolSize: 30
+#  minIdleConns: 30
+#
+#mysql:
+#  dbUser: "root"
+#  dbPassword: ":123456"
+#  dbTcp: "@tcp(localhost:3306)"
+#  #dbName: "/local_db"
+#  dbName: "/shaohua"
+#  dbParameters: "?charset=utf8mb4"
+#

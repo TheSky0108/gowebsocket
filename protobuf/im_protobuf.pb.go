@@ -136,6 +136,7 @@ type SendMsgReq struct {
 	Type                 string   `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
 	Msg                  string   `protobuf:"bytes,6,opt,name=msg,proto3" json:"msg,omitempty"`
 	IsLocal              bool     `protobuf:"varint,7,opt,name=isLocal,proto3" json:"isLocal,omitempty"`
+	SendTime             uint64   `protobuf:"varint,8,opt,name=sendTime,proto3" json:"sendTime,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -214,6 +215,12 @@ func (m *SendMsgReq) GetIsLocal() bool {
 	}
 	return false
 }
+func (m *SendMsgReq) GetSendTime() uint64 {
+	if m != nil {
+		return m.SendTime
+	}
+	return 0
+}
 
 type SendMsgRsp struct {
 	RetCode              uint32   `protobuf:"varint,1,opt,name=retCode,proto3" json:"retCode,omitempty"`
@@ -278,6 +285,7 @@ type SendMsgReqAll struct {
 	Cms                  string   `protobuf:"bytes,4,opt,name=cms,proto3" json:"cms,omitempty"`
 	Type                 string   `protobuf:"bytes,5,opt,name=type,proto3" json:"type,omitempty"`
 	Msg                  string   `protobuf:"bytes,6,opt,name=msg,proto3" json:"msg,omitempty"`
+	SendTime             uint64   `protobuf:"varint,7,opt,name=sendTime,proto3" json:"sendTime,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
@@ -348,6 +356,12 @@ func (m *SendMsgReqAll) GetMsg() string {
 		return m.Msg
 	}
 	return ""
+}
+func (m *SendMsgReqAll) GetSendTime() uint64 {
+	if m != nil {
+		return m.SendTime
+	}
+	return 0
 }
 
 type SendMsgAllRsp struct {

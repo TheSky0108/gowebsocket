@@ -154,7 +154,6 @@ func (c *Client) Login(appId uint32, userId string, loginTime uint64) {
 // 用户心跳
 func (c *Client) Heartbeat(currentTime uint64) {
 	c.HeartbeatTime = currentTime
-
 	return
 }
 
@@ -169,13 +168,10 @@ func (c *Client) IsHeartbeatTimeout(currentTime uint64) (timeout bool) {
 
 // 是否登录了
 func (c *Client) IsLogin() (isLogin bool) {
-
 	// 用户登录了
 	if c.UserId != "" {
 		isLogin = true
-
 		return
 	}
-
 	return
 }
